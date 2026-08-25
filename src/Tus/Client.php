@@ -454,7 +454,7 @@ class Client extends AbstractTus
         $bytes = $bytes < 0 ? $this->fileSize : $bytes;
 
         $headers = $this->headers + [
-            'Upload-Length' => $this->fileSize,
+            'Upload-Length' => (string) $this->fileSize,
             'Upload-Key' => $key,
             'Upload-Checksum' => $this->getUploadChecksumHeader(),
             'Upload-Metadata' => $this->getUploadMetadataHeader(),
@@ -466,7 +466,7 @@ class Client extends AbstractTus
 
             $headers += [
                 'Content-Type' => self::HEADER_CONTENT_TYPE,
-                'Content-Length' => \strlen($data),
+                'Content-Length' => (string) \strlen($data),
             ];
         }
 
@@ -517,7 +517,7 @@ class Client extends AbstractTus
     {
         $response = $this->getClient()->post($this->apiPath, [
             'headers' => $this->headers + [
-                'Upload-Length' => $this->fileSize,
+                'Upload-Length' => (string) $this->fileSize,
                 'Upload-Key' => $key,
                 'Upload-Checksum' => $this->getUploadChecksumHeader(),
                 'Upload-Metadata' => $this->getUploadMetadataHeader(),
@@ -619,14 +619,14 @@ class Client extends AbstractTus
         $data    = $this->getData($offset, $bytes);
         $headers = $this->headers + [
             'Content-Type' => self::HEADER_CONTENT_TYPE,
-            'Content-Length' => \strlen($data),
+            'Content-Length' => (string) \strlen($data),
             'Upload-Checksum' => $this->getUploadChecksumHeader(),
         ];
 
         if ($this->isPartial()) {
             $headers += ['Upload-Concat' => self::UPLOAD_TYPE_PARTIAL];
         } else {
-            $headers += ['Upload-Offset' => $offset];
+            $headers += ['Upload-Offset' => (string) $offset];
         }
 
         try {
